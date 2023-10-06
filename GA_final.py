@@ -28,8 +28,6 @@ gene_bounds = [
     (1e-15, 3e-15),  # epsilon stepsize e-15
     (1e-6, 1e-2),  # delta (1e-4 2e-4) stepsize
     (1e-4 , 1e-2) ,#EPSILON_SEQ_ERROR
-    #(0.99999999999, 0.999999999999),  # ymax
-    #(0.93, 0.95),  # ymin
     
 ]
 
