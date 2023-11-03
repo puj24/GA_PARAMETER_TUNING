@@ -228,7 +228,7 @@ void sm_4_star(double four_stars[][4], double sm_3D_vecs[][4], int sm_IS[][2], d
         int k_bot = floor((cos(DELTA) * p[j] - sin_j * sin(DELTA) - q) / m);
         if (k_top <= 0 || k_bot >= N_KVEC_PAIRS)
         {
-            printf("bad values : k_bot = %d, k_top = %d\n", k_bot, k_top);
+            // printf("bad values : k_bot = %d, k_top = %d\n", k_bot, k_top);
             continue;
         }
         else
@@ -554,7 +554,7 @@ void starMatching(double centroids_st[MAX_STARS][3], int tot_stars, double data[
 
     // If no star is matched
     else{
-        printf("\nCOULD NOT MATCH STARS\n");
+        // printf("\nCOULD NOT MATCH STARS\n");
         
     }
 }
@@ -979,17 +979,17 @@ void OILS(short arr_out_img[BREADTH + 2][LENGTH + 2]){
 
         // Printing the quaternion values on the terminal
         printf("\n");
-        printf("q_3.x = %.15f\n", out[0]);
-        printf("q_3.y = %.15f\n", out[1]);
-        printf("q_3.z = %.15f\n", out[2]);
-        printf("q_4   = %.15f\n", out[3]);
+        printf("%.15f ", out[0]);
+        printf("%.15f ", out[1]);
+        printf("%.15f ", out[2]);
+        printf("%.15f\n", out[3]);
     }
     else
     {
         printf("\n");
-        printf("q_3.x = %.15f\n", -1.0);
-        printf("q_3.y = %.15f\n",1.0);
-        printf("q_3.z = %.15f\n", 1.0);
-        printf("q_4   = %.15f\n", 1.0);
+        printf("%.15f ", -1.0);
+        printf("%.15f ",1.0);
+        printf("%.15f ", 1.0);
+        printf("%.15f\n", 1.0);
     }
 }
