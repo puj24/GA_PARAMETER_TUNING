@@ -932,11 +932,11 @@ void quest(double Q[4], double data[3][MAX_STARS], int N){
             add_vec(&q_3, &cross_q, &e);
             q_4 = new_4;
         }
-        if(q_4 < 0)
-        {
-            scale_vec(&q_3, -1);
-            q_4 = -q_4;
-        }
+        // if(q_4 < 0)
+        // {
+        //     scale_vec(&q_3, -1);
+        //     q_4 = -q_4;
+        // }
     }
     else
     {
