@@ -15,11 +15,11 @@ gene_bounds = [
 
 # Define the target outputs
 desired_outputs = np.loadtxt("out_ideal.txt", dtype=float)
-desired_outputs = desired_outputs.reshape(5, 4)
+desired_outputs = desired_outputs.reshape(3, 4)
 
 # Define the C program command
 c_program_command_1 = "gcc main.c -o exe -lm"
-c_program_command_2 = "./exe"
+subprocess.run(c_program_command_1, shell=True)
 
 # Convert gene_bounds to a np array
 gene_space = np.array(gene_bounds)
@@ -69,48 +69,18 @@ def cal_fitness(q1, q2):
 # Evaluate the fitness for each test case
 def fitness_func(solution):
     # Create a header file with the current solution's parameters
-    with open("constants.h", "w") as file:
-        file.write("#include <stdio.h>\n")
-        # Write constants based on the solution
-        for i, param_range in enumerate(gene_bounds):
-            file.write("#include <stdio.h>\n")
-            file.write("#include <stdlib.h>\n")
-            file.write("#include <math.h>\n")
-            file.write("#include <string.h>\n")
-            # Generate multiple constants based on the solution's genes
-            #file.write("#define THRESHOLD 3\n")
-            file.write("#define STAR_MIN_PIXEL 3\n")
-            file.write("#define STAR_MAX_PIXEL 150\n")
-            file.write("#define MAX_STARS 100\n")
-            file.write("#define SKIP_PIXELS 2\n")
-            file.write("#define LENGTH 1820\n")
-            file.write("#define BREADTH 1820\n")     
-            file.write("#define PIXEL_WIDTH 1.55e-6\n")
-            file.write("#define NUM_MAX_STARS 13\n")
-            file.write("//SM constants\n")
-            file.write("#define FOCAL_LENGTH 0.0175\n")
-            #file.write("#define EPSILON 2.2e-15\n")
-            file.write("#define EPSILON 2.22e-15\n")
-            file.write("#define DELTA {}\n".format(10**solution[0]))
-            file.write("#define ANG_DIST_TOLERANCE 1.2\n")
-            file.write("#define N_GC 8876\n")
-            file.write("#define N_KVEC_PAIRS 625957\n")
-            file.write("#define Y_MAX 0.999999999992621\n")
-            file.write("#define Y_MIN 0.971731093094223\n")
-            file.write("#define TOL {}\n".format(10**solution[1]))
-            file.write("#define P1 {}\n".format(solution[2]))
-            file.write("#define P2 {} \n".format(solution[3]))
-            file.write("#define EPSILON_SEQ_ERROR {} \n".format(solution[4])) 
-            file.write("#define EPSILON_EST 0.001 \n")
-    
-    subprocess.run(c_program_command_1, shell=True)
+
+    # .format(10**solution[0]), .format(10**solution[1]),  .format(solution[2]), .format(solution[3]), .format(solution[4])
+    c_program_command_2 = "./exe"
+    arguments = [str(10**solution[0]), str(10**solution[1]), str(solution[2]), str(solution[3]), str(solution[4])]
+    print(c_program_command_2, arguments)
 
     # Run the C program and collect the output
-    process = subprocess.Popen(c_program_command_2, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen([c_program_command_2] + arguments, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, error = process.communicate()
     output = output.decode().strip()
     output = list(filter(None, output.split('\n')))
-    print(output)
+    print(output,'\n')
 
     # Calculate the fitness based on the differences between desired and obtained coordinates
     output_coordinates = np.array([list(map(float, line.split())) for line in output])
@@ -159,8 +129,6 @@ def probabilistic_selection(population, fitness_values, num_parents):
     return selected_parents, selected_fitness
 
 
-
-
 # Define gene-wise mutation function
 def mutate_adaptive(solution, mutation_rate, parent_fitness):
     mutated_solution = solution.copy()
@@ -176,8 +144,8 @@ def mutate_adaptive(solution, mutation_rate, parent_fitness):
     return mutated_solution
 
 # Hyperparameters
-population_size = 10
-num_generations = 10
+population_size = 100
+num_generations = 100
 initial_mutation_rate = 0.1
 final_mutation_rate = 0.01
 #mutation_rate=[final_mutation_rate,initial_mutation_rate]
@@ -210,7 +178,7 @@ for generation in range(num_generations):
     best_fitness_idx = np.argmin(fitness_values)
     best_solution = population[best_fitness_idx]
     best_fitness = fitness_values[best_fitness_idx]
-    print(f"Generation {generation+1}: Best Fitness = {best_fitness}")
+    print(f"Generation {generation+1}: Best Fitness = {best_fitness}\n\n")
 
    
 
