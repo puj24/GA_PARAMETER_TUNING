@@ -185,7 +185,7 @@ int already_matched(int sm_IS[][2], int indx)
     return 0;
 }
 
-void sm_4_star(double four_stars[][4], double sm_3D_vecs[][4], int sm_IS[][2], double body_vecs_IS[][4], int sm_K_vec_arr[][3], int *N_match, int N_i, double q, double m, int N_is)
+void sm_4_star(double four_stars[][4], double sm_3D_vecs[][4], int sm_IS[][2], double body_vecs_IS[][4], int sm_K_vec_arr[][3], int *N_match, int N_i, double q, double m, int N_is, double DELTA)
 {   
     int i = 0;
     int j = 0;
@@ -384,7 +384,7 @@ void sm_validate(double sm_3D_vecs[][4], int sm_IS[][2], double body_vecs_IS[][4
                 double d_ij = fabs(body_vecs_IS[i][1]*body_vecs_IS[j][1] + body_vecs_IS[i][2]*body_vecs_IS[j][2] + body_vecs_IS[i][3]*body_vecs_IS[j][3]);
                 double d_ij_gc = fabs(sm_GC[sm_IS[i][1] - 1][1]*sm_GC[sm_IS[j][1] - 1][1] + sm_GC[sm_IS[i][1] - 1][2]*sm_GC[sm_IS[j][1] - 1][2] + sm_GC[sm_IS[i][1] - 1][3]*sm_GC[sm_IS[j][1] - 1][3]);
                 
-                if ((10e4 * fabs(d_ij/d_ij_gc - 1)) < tol){
+                if ((fabs(d_ij/d_ij_gc - 1)) < tol){
                     votes[i]++;
                     votes[j]++;
                 }
@@ -415,7 +415,8 @@ void sm_validate(double sm_3D_vecs[][4], int sm_IS[][2], double body_vecs_IS[][4
     *N_is = N_new;
 }
 
-void starMatching(double centroids_st[][3], int tot_stars, double data[3][MAX_STARS], int input_ids[50], int star_ids[50], int* matched_stars){
+void starMatching(double centroids_st[][3], int tot_stars, double data[3][MAX_STARS], int input_ids[50], int star_ids[50], int* matched_stars,
+                double DELTA, double TOL, double P1, double P2){
     // Maximum number of iterations
     int N_max = tot_stars - 1;
 
@@ -485,7 +486,7 @@ void starMatching(double centroids_st[][3], int tot_stars, double data[3][MAX_ST
             }
 
             // Perform 4 star N star algorithm
-            sm_4_star(four_stars, sm_3D_vecs, sm_IS, body_vecs_IS, sm_K_vec_arr, &N_match, N_i, q, m, N_is);
+            sm_4_star(four_stars, sm_3D_vecs, sm_IS, body_vecs_IS, sm_K_vec_arr, &N_match, N_i, q, m, N_is, DELTA);
 
             // printf("after SM_4_star = %d\n", N_match);
             
@@ -741,7 +742,7 @@ void matmul(Vec *temp, Matrix_3 *M, Vec *v){
     temp->z = M->elements[2][0] * v->x + M->elements[2][1] * v->y + M->elements[2][2] * v->z;
 }
 
-void quest(double Q[4], double data[3][MAX_STARS], int N){
+void quest(double Q[4], double data[3][MAX_STARS], int N, double EPSILON_SEQ_ERROR){
     Vec b[N];
     Vec r[N];
 
@@ -952,7 +953,7 @@ void quest(double Q[4], double data[3][MAX_STARS], int N){
 }
 
 
-void HILS(double (*arr_out_UIS)[3], int tot_stars){
+void HILS(double (*arr_out_UIS)[3], int tot_stars, double DELTA, double TOL, double P1, double P2, double EPSILON_SEQ_ERROR){
 
     // int tot_stars = 0;
     // double centroids_st[MAX_STARS][3];
@@ -978,7 +979,7 @@ void HILS(double (*arr_out_UIS)[3], int tot_stars){
     double data[3][MAX_STARS];
 
     // Perform Star Matching
-    starMatching(arr_out_UIS, tot_stars, data, input_ids, star_ids, &matched_stars);
+    starMatching(arr_out_UIS, tot_stars, data, input_ids, star_ids, &matched_stars, DELTA, TOL, P1, P2);
 
     // Prints the number of stars matched by the SM block on the terminal
     // printf("\nTotal matched stars = %d\n\n", matched_stars);
@@ -995,10 +996,10 @@ void HILS(double (*arr_out_UIS)[3], int tot_stars){
         double out[4];
 
         // Perform QUEST
-        quest(out, data, matched_stars);
+        quest(out, data, matched_stars, EPSILON_SEQ_ERROR);
 
         // Printing the quaternion values on the terminal
-        printf("\n");
+        // printf("\n");
         printf("%.15f ", out[0]);
         printf("%.15f ", out[1]);
         printf("%.15f ", out[2]);
@@ -1006,7 +1007,7 @@ void HILS(double (*arr_out_UIS)[3], int tot_stars){
     }
     else
     {
-        printf("\n");
+        // printf("\n");
         printf("%.15f ", -1.0);
         printf("%.15f ",1.0);
         printf("%.15f ", 1.0);
