@@ -6,16 +6,16 @@ num_constants = 5
 
 # Define the gene bounds
 gene_bounds = [
-    np.linspace(-7, 0),  # log delta
-    np.linspace(-4, 3),  # TOL
+    np.linspace(-7, -2),  # log delta
+    np.linspace(-1, 1),  # TOL
     np.linspace(25, 50),  # P1
     np.linspace(70, 90),  # P2
-    np.linspace(0.001, 0.01)  # EPSILON_SEQ_ERROR
+    np.linspace(0.0001, 0.001)  # EPSILON_SEQ_ERROR
 ]
 
 # Define the target outputs
 desired_outputs = np.loadtxt("out_ideal.txt", dtype=float)
-desired_outputs = desired_outputs.reshape(3, 4)
+desired_outputs = desired_outputs.reshape(1, 4)
 
 # Define the C program command
 c_program_command_1 = "gcc main.c -o exe -lm"
@@ -71,6 +71,7 @@ def fitness_func(solution):
     # Create a header file with the current solution's parameters
 
     # .format(10**solution[0]), .format(10**solution[1]),  .format(solution[2]), .format(solution[3]), .format(solution[4])
+    print('\n')
     c_program_command_2 = "./exe"
     arguments = [str(10**solution[0]), str(10**solution[1]), str(solution[2]), str(solution[3]), str(solution[4])]
     print(c_program_command_2, arguments)
@@ -80,7 +81,7 @@ def fitness_func(solution):
     output, error = process.communicate()
     output = output.decode().strip()
     output = list(filter(None, output.split('\n')))
-    print(output,'\n')
+    print(output)
 
     # Calculate the fitness based on the differences between desired and obtained coordinates
     output_coordinates = np.array([list(map(float, line.split())) for line in output])
@@ -184,5 +185,6 @@ for generation in range(num_generations):
 
 # Print the best solution found
 print("Best Solution:")
-print(best_solution)
+print("DELTA: ", 10**best_solution[0], " TOL: ", 10**best_solution[1], " P1: ", best_solution[2], " P2: ", best_solution[3], " SEQ_ERR: ", best_solution[4])
 print("Best Fitness:", best_fitness)
+print("Quaternion Error (in arcsec): ", best_fitness*1e-5)

@@ -519,8 +519,9 @@ void starMatching(double centroids_st[][3], int tot_stars, double data[3][MAX_ST
             break;
         }
     }
+    // printf("before validation = %d\n", N_is);
 
-    // sm_validate(sm_3D_vecs, sm_IS, body_vecs_IS, sm_GC, &N_is, N_i, tol, p_1, p_2);
+    sm_validate(sm_3D_vecs, sm_IS, body_vecs_IS, sm_GC, &N_is, N_i, tol, p_1, p_2);
 
     // Index variable for organising SM output
     int data_index = 0;

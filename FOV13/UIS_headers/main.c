@@ -12,6 +12,7 @@
 // #include "UIS_3.h"
 // #include "UIS_4.h"
 // #include "UIS_5.h"
+#include "UIS_6.h"
 // #include "UIS_11.h"
 // #include "UIS_12.h"
 // #include "UIS_13.h"
@@ -39,9 +40,9 @@
 // #include "UIS_42.h"
 // #include "UIS_43.h"
 // #include "UIS_44.h"
-#include "UIS_45.h"
-#include "UIS_46.h"
-#include "UIS_47.h"
+// #include "UIS_45.h"
+// #include "UIS_46.h"
+// #include "UIS_47.h"
 // #include "UIS_48.h"
 // #include "UIS_49.h"
 // #include "UIS_50.h"
@@ -86,6 +87,8 @@ int main(int argc, char *argv[])
 
 
   // HILS(arr_out_UIS_5, N_i_5, DELTA, TOL, P1, P2, EPSILON_SEQ_ERROR);
+
+    HILS(arr_out_UIS_6, N_i_6, DELTA, TOL, P1, P2, EPSILON_SEQ_ERROR);
 
 
   // HILS(arr_out_UIS_11, N_i_11, DELTA, TOL, P1, P2, EPSILON_SEQ_ERROR);
@@ -163,13 +166,13 @@ int main(int argc, char *argv[])
   // HILS(arr_out_UIS_44, N_i_44, DELTA, TOL, P1, P2, EPSILON_SEQ_ERROR);
 
 
-  HILS(arr_out_UIS_45, N_i_45, DELTA, TOL, P1, P2, EPSILON_SEQ_ERROR);
+  // HILS(arr_out_UIS_45, N_i_45, DELTA, TOL, P1, P2, EPSILON_SEQ_ERROR);
 
 
-  HILS(arr_out_UIS_46, N_i_46, DELTA, TOL, P1, P2, EPSILON_SEQ_ERROR);
+  // HILS(arr_out_UIS_46, N_i_46, DELTA, TOL, P1, P2, EPSILON_SEQ_ERROR);
 
 
-  HILS(arr_out_UIS_47, N_i_47, DELTA, TOL, P1, P2, EPSILON_SEQ_ERROR);
+  // HILS(arr_out_UIS_47, N_i_47, DELTA, TOL, P1, P2, EPSILON_SEQ_ERROR);
 
 
   // HILS(arr_out_UIS_48, N_i_48, DELTA, TOL, P1, P2, EPSILON_SEQ_ERROR);
